@@ -11,4 +11,6 @@ void RevertString(char *str)
 	}
 
 	strcpy(str, reversed);
+
+	free(reversed);
 }
