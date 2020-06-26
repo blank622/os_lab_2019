@@ -1,17 +1,19 @@
 CC=gcc
 CFLAGS=-I.
 
-lib: header.c
-	$(CC) -o header.o -c header.c $(CFLAGS)
-	ar rcs libheader.a header.o
+all : server client
 
-server: server.c libhead.a
-	$(CC) -o server.o -c server.c $(CFLAGS)
-	$(CC) -o server server.o -L -lhead -pthread  $(CFLAGS)
+server : server.o 
+	$(CC) -o server -lpthread server.o -L. -lmult_modulo -pthread
 
-client: client.c libhead.a
-	$(CC) -o client.o -c client.c $(CFLAGS)
-	$(CC) -o client client.o -L -lhead $(CFLAGS)
+client : client.o 
+	$(CC) -o client client.o -L. -lmult_modulo -pthread
 
-clean:
-	rm client server client.o server.o header.o libhead.a
+server.o :
+	$(CC) -o server.o -c -std=c99 -L. -lmult_modulo server.c $(CFLAGS) -pthread
+
+client.o : 
+	$(CC) -o client.o -c -std=c99 -L. -lmult_modulo client.c $(CFLAGS) -pthread
+
+clean : 
+	rm client.o client server.o server 
