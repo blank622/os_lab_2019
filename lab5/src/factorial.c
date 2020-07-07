@@ -15,24 +15,23 @@ struct FactArgs{
 long long result = 1;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
-int Factorial(const struct FactArgs *args)
+void* Factorial(void *args)
 {
+    struct FactArgs *fact_args = (struct FactArgs*)args;
     int fact = 1;
     int i;
-    for(i = args->begin; i <= args->end; i++){
+    printf("begin = %d\nend = %d\n", fact_args->begin, fact_args->end);
+    for(i = fact_args->begin; i <= fact_args->end; i++){
         fact *= i;
-        fact %= args->mod;
+        fact %= fact_args->mod;
     }
+    printf("fact = %d\n", fact);
     pthread_mutex_lock(&mutex);
     result *= fact;
-    result %= args->mod;
+    result %= fact_args->mod;
     pthread_mutex_unlock(&mutex);
-    return fact;
-}
-
-void *ThreadFact(void *args) {
-  struct FactArgs *fact_args = (struct FactArgs*)args;
-  return (void *)(size_t)Factorial(fact_args);
+    printf("result = %d\n", result);
+    return NULL;
 }
 
 int main(int argc, char **argv) {
@@ -95,20 +94,22 @@ int main(int argc, char **argv) {
     {
         int begin = (int)(block * i)+1;
         int end = (int)(block * (i + 1));
+	
+	if (i == threads_num - 1) end = k;
+	
         args[i].begin = begin;
         args[i].end = end;
         args[i].mod = mod;
     }
     for (i = 0; i < threads_num; i++) {
-        if (pthread_create(&threads[i], NULL, ThreadFact, (void *)&args[i])) {
+        if (pthread_create(&threads[i], NULL, Factorial, (void *)&args[i])) {
             printf("Error: pthread_create failed!\n");
             return 1;
         }
     }
 
     for ( i = 0; i < threads_num; i++) {
-        int fact = 1;
-        pthread_join(threads[i], (void **)&fact);
+        pthread_join(threads[i], NULL);
     }
 
     printf("Total: %lld\n", result);

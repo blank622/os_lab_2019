@@ -162,9 +162,10 @@ int main(int argc, char **argv) {
         GenerateArray(array, array_size, seed);
 
 
-        if (i==3){
-            while(true){ }
-        }
+        //if (i==3){
+        //    while(true){ }
+        //}
+	sleep(15);
 
         if (with_files) {
           // use files here
@@ -263,7 +264,7 @@ while (active_child_processes > 0) {
   printf("Elapsed time: %fms\n", elapsed_time);
   fflush(NULL);
 
-  sleep(60);
+  //sleep(60);
 
   return 0;
 }

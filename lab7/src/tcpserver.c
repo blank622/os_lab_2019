@@ -17,7 +17,6 @@ int main(int argc, char *argv[]) {
 
   int lfd, cfd;
   int nread;
-  char buf[100];
   struct sockaddr_in servaddr;
   struct sockaddr_in cliaddr;
   int serv_port = 20001;
@@ -41,7 +40,7 @@ int main(int argc, char *argv[]) {
       }
     }
   }
-  //char *buf = (char*)calloc(bufsize, sizeof(char));
+  char *buf = (char*)calloc(bufsize, sizeof(char));
 
   if ((lfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
     perror("socket");
@@ -73,7 +72,7 @@ int main(int argc, char *argv[]) {
     }
     printf("connection established\n");
 
-    while ((nread = read(cfd, buf, bufsize)) > 0) {
+    while ((nread = read(cfd, &buf, bufsize)) > 0) {
       write(1, &buf, nread);
     }
 

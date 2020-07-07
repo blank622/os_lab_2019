@@ -1,6 +1,8 @@
 CC=gcc
 CFLAGS=-I.
 
+all: tcp udp
+
 tcp: tcpclient.c tcpserver.c
 	$(CC) -o tcpclient tcpclient.c $(CFLAGS)
 	$(CC) -o tcpserver tcpserver.c $(CFLAGS)

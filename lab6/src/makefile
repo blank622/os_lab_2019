@@ -1,19 +1,22 @@
 CC=gcc
 CFLAGS=-I.
 
-all : server client
+all: lib server client
 
-server : server.o 
-	$(CC) -o server -lpthread server.o -L. -lmult_modulo -pthread
+lib: libmult.c
+	$(CC) -o libmult.o -c libmult.c $(CFLAGS)
+	ar rcs libmult.a libmult.o
 
-client : client.o 
-	$(CC) -o client client.o -L. -lmult_modulo -pthread
+server: server.c
+	$(CC) -o server server.c libmult.c -pthread $(CFLAGS)
 
-server.o :
-	$(CC) -o server.o -c -std=c99 -L. -lmult_modulo server.c $(CFLAGS) -pthread
+#server: server.c libmult.a
+#	$(CC) -o server.o -c server.c $(CFLAGS)
+#	$(CC) -o server server.o -L -llibmult -pthread $(CFLAGS)
 
-client.o : 
-	$(CC) -o client.o -c -std=c99 -L. -lmult_modulo client.c $(CFLAGS) -pthread
+client: client.c
+	$(CC) -o client.o -c client.c $(CFLAGS)
+	$(CC) -o client client.o -pthread $(CFLAGS)
 
-clean : 
-	rm client.o client server.o server 
+clean:
+	rm client server client.o

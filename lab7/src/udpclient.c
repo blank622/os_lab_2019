@@ -10,7 +10,7 @@
 #include <unistd.h>
 
 //#define SERV_PORT 20001
-#define BUFSIZE 1024
+//#define BUFSIZE 1024
 #define SADDR struct sockaddr
 #define SLEN sizeof(struct sockaddr_in)
 
@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
   int bufsize = 1024;
 
   if (argc < 2) {
-    printf("usage: client <IPaddress of server>\n");
+    printf("usage: client <IPaddress of server> [serv_port] [bufsize]\n");
     exit(1);
   }
 

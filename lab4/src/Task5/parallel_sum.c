@@ -8,13 +8,13 @@
 
 #include <pthread.h>
 
-#include "/projects/Labs/lab3/src/utils.h"
+//#include "/projects/Labs/lab3/src/utils.h"
 
 void *ThreadSum(void *args) {
   struct SumArgs *sum_args = (struct SumArgs *)args;
   return (void *)(size_t)Sum(sum_args);
 }
-
+//
 int main(int argc, char **argv) {
 
   uint32_t threads_num = 0;
@@ -104,6 +104,9 @@ int main(int argc, char **argv) {
       args[i].array = array;
       args[i].begin = (array_size/threads_num)*i;
       args[i].end = (array_size/threads_num)*(i+1);
+
+      if (i == threads_num - 1) args[i].end = array_size;
+
     //   printf("%d thread begins: %d, ends %d\n", i+1, args[i].begin, args[i].end);
       if (pthread_create(&threads[i], NULL, ThreadSum, (void *)(args+i))) {
       printf("Error: pthread_create failed!\n");
